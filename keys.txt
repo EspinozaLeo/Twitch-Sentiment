@@ -1,2 +1,0 @@
-client_id=41rrsier5hii7v88dqeja1tuitbu04
-client_secret=tyclm8shejwsuiry8thbsif23j9btm
