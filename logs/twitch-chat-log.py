@@ -11,8 +11,6 @@ from emoji import demojize
 # These are required
 server = 'irc.chat.twitch.tv'
 port = 6667
-# nickname = 'hazard_knight'
-# token = 'oauth:33yrdii4lajvw1fzlann7sedpvpxo8'
 nickname = credentials.nickname
 token = credentials.token
 
