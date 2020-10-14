@@ -1,12 +1,23 @@
+# Author: Leo Espinoza
+#
+# twitch-chat-log is a script that allows a user to collect chat data from
+# a given Twitch channel.
+
 import socket
+import logging
+import credentials
+from emoji import demojize
 
 # These are required
 server = 'irc.chat.twitch.tv'
 port = 6667
-nickname = 'hazard_knight'
-token = 'oauth:33yrdii4lajvw1fzlann7sedpvpxo8'
+# nickname = 'hazard_knight'
+# token = 'oauth:33yrdii4lajvw1fzlann7sedpvpxo8'
+nickname = credentials.nickname
+token = credentials.token
 
 
+# Connecting to channel
 print("Enter channel name: ")
 # Channel name  format is '#name'
 fileName = input()
@@ -21,10 +32,6 @@ print("Connected to host!")
 
 resp = sock.recv(2048).decode('utf-8')
 
-resp
-
-import logging
-
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s — %(message)s',
                     datefmt='%Y-%m-%d_%H:%M:%S',
@@ -32,7 +39,8 @@ logging.basicConfig(level=logging.DEBUG,
 
 logging.info(resp)
 
-from emoji import demojize
+
+# demojize starts here
 
 end = 1
 

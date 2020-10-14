@@ -1,1 +1,3 @@
 keys.txt
+logs/credentials.py
+logs/__pycache__/credentials.cpython-37.pyc
