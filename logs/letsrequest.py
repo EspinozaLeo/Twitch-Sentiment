@@ -8,45 +8,43 @@ clientInfo = {'Client-ID': credentials.client_id,
 
 baseURL = 'https://api.twitch.tv/helix/'
 
-# get current top games
-url = baseURL + "games/top"
-
-# postURL = 'https://id.twitch.tv/oauth2/token?client_id=41rrsier5hii7v88dqeja1tuitbu04&client_secret=tyclm8shejwsuiry8thbsif23j9btm&grant_type=client_credentials'
-
-
-
-# getAuthenticated(cID) posts a request to the Twitch API and returns an
-# access token.
+# getAuthenticated(cID) authenticates the client and adds an oAuth token to
+# clientInfo.
 def getAuthenticated(cInfo):
     authURL = 'https://id.twitch.tv/oauth2/token?client_id=' + cInfo['Client-ID'] + '&client_secret=' + cInfo['Client-Secret'] + '&grant_type=client_credentials'
     resp = requests.post(authURL)
     parseResp = json.loads(resp.text)
-
-    # DEBUG
+    # The following line is for DEBUGGING purposes
     # formatJson(parseResp)
-    authenticateMe(parseResp['access_token'])
-    return parseResp['access_token']
+    clientInfo['Authorization'] = 'Bearer ' + parseResp['access_token']
 
+# getStreamerInfo(streamerName) returns information about a streamer given
+# a streamer's name.
 def getStreamerInfo(streamerName):
-    getURL = baseURL + '/search/channels?query=' + streamerName
-    getResp = requests.get(getURL)
+    streamerURL = baseURL + 'search/channels?query=' + streamerName
+    getResp = requests.get(streamerURL, headers = clientInfo)
+    print(getResp.status_code)
     getParse = json.loads(getResp.text)
-    formatJson(getParse)
+    # print(getParse)
+    # formatJson(getParse)
+    print(getParse['data'][0])
+    # get current top games
+
+def topStreams():
+    topGameURL = baseURL + "games/top"
+    topResp = requests.get(topGameURL, headers = clientInfo)
+    topParse = json.loads(topResp.text)
+    formatJson(topParse)
 
 # formatJson(jsonString) formats a json. This function is for
-# debugging purposes.
+# debugging purposes. Prints readable json content.
 def formatJson(jsonString):
     formattedJson = json.dumps(jsonString, indent=2)
     print(formattedJson)
 
-def authenticateMe(aToken):
-    # authURL = 'https://api.twitch.tv/helix/'
-    authURL = 'https://api.twitch.tv/helix/search/channels?query=aceu'
-    myHeader = {'Client-ID': credentials.client_id,
-                'Authorization' : 'Bearer ' + aToken}
-    resp = requests.get(authURL, headers = myHeader)
-    getRespJson = json.loads(resp.text)
-    formatJson(getRespJson)
 
-accessToken = getAuthenticated(clientInfo)
+streamer = 'nickmercs'
+
+getAuthenticated(clientInfo)
+getStreamerInfo(streamer)
 # getStreamerInfo()
